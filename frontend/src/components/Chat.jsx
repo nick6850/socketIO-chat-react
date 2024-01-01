@@ -9,8 +9,8 @@ function Chat({ sendMessage, allMessages, handleTyping, typingData }) {
         {allMessages.map((message, index) => {
           return (
             <div key={message + index}>
-              <span>{message.username}: </span>
-              <span>{message.message}</span>
+              <span className="username">{message.username}: </span>
+              <span className="message">{message.message}</span>
             </div>
           );
         })}
