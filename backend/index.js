@@ -10,6 +10,7 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
+  let typingTimeout;
   socket.on("sendMessage", (message) => {
     io.to(message.room).emit("newMessage", message);
   });
@@ -26,6 +27,14 @@ io.on("connection", (socket) => {
     });
 
     socket.data.userCredentials = { room, username };
+  });
+
+  socket.on("userTyping", ({ room, username }) => {
+    socket.to(room).emit("setTyping", `${username} is typing...`);
+    clearTimeout(typingTimeout);
+    typingTimeout = setTimeout(() => {
+      socket.to(socket.data.userCredentials.room).emit("setTyping", "");
+    }, 1000);
   });
 
   socket.on("disconnect", () => {
