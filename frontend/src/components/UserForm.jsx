@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 
-function UserForm({ setIsLoggedIn }) {
-  const [username, setUsername] = useState("");
-  const [room, setRoom] = useState("");
-
+function UserForm({ setIsLoggedIn, userData, handleUserData }) {
   function handleSubmit(e) {
     e.preventDefault();
-    if (username && room) {
+    if (userData.username && userData.room) {
       setIsLoggedIn(true);
     }
   }
@@ -18,16 +15,16 @@ function UserForm({ setIsLoggedIn }) {
         type="text"
         id="username"
         required
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        value={userData.username}
+        onChange={handleUserData}
       />
       <label htmlFor="room">Room you want to join:</label>
       <input
         type="text"
         id="room"
         required
-        value={room}
-        onChange={(e) => setRoom(e.target.value)}
+        value={userData.room}
+        onChange={handleUserData}
       />
       <button>Join the room</button>
     </form>

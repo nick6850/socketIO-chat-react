@@ -10,7 +10,30 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log(`${socket.id} connected`);
+  socket.on("sendMessage", (message) => {
+    io.to(message.room).emit("newMessage", message);
+  });
+
+  socket.on("joinRoom", ({ room, username }) => {
+    socket.join(room);
+    socket.emit("newMessage", {
+      message: "Welcome to the chat!",
+      username: "Chatbot",
+    });
+    socket.to(room).emit("newMessage", {
+      message: `${username} has joined the chat.`,
+      username: "Chatbot",
+    });
+
+    socket.data.userCredentials = { room, username };
+  });
+
+  socket.on("disconnect", () => {
+    socket.to(socket.data.userCredentials.room).emit("newMessage", {
+      message: `${socket.data.userCredentials.username} has left the chat`,
+      username: "Chatbot",
+    });
+  });
 });
 
 server.listen(3000, () => console.log("Server is running on port 3000"));

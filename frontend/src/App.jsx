@@ -4,21 +4,48 @@ import Chat from "./components/Chat";
 import { socket } from "./socket";
 
 function App() {
+  const [allMessages, setAllMessages] = useState([]);
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState({ username: "", room: "" });
+
+  function handleUserData(e) {
+    e.preventDefault();
+    setUserData((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+  }
 
   useEffect(() => {
     if (isLoggedIn) {
-      console.log("connecting");
       socket.connect();
-      console.log("Socket connected!");
+      socket.emit("joinRoom", userData);
     }
+
+    return () => {
+      socket.disconnect();
+    };
   }, [isLoggedIn]);
 
-  if (!isLoggedIn) {
-    return <UserForm setIsLoggedIn={setIsLoggedIn} />;
+  useEffect(() => {
+    socket.on("newMessage", (newMsg) => {
+      setAllMessages((prevMsgs) => [...prevMsgs, newMsg]);
+    });
+  }, []);
+
+  function sendMessage(message) {
+    socket.emit("sendMessage", { message, ...userData });
   }
 
-  return <Chat />;
+  if (!isLoggedIn) {
+    return (
+      <UserForm
+        setIsLoggedIn={setIsLoggedIn}
+        userData={userData}
+        handleUserData={handleUserData}
+      />
+    );
+  }
+
+  return <Chat sendMessage={sendMessage} allMessages={allMessages} />;
 }
 
 export default App;
