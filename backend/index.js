@@ -12,7 +12,7 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   let typingTimeout;
   socket.on("sendMessage", (message) => {
-    io.to(message.room).emit("newMessage", message);
+    io.to(message.room).emit("newMessage", { ...message, userID: socket.id });
   });
 
   socket.on("joinRoom", ({ room, username }) => {
@@ -25,6 +25,7 @@ io.on("connection", (socket) => {
       message: `${username} has joined the chat.`,
       username: "Chatbot",
     });
+    socket.emit("setID", socket.id);
 
     socket.data.userCredentials = { room, username };
   });

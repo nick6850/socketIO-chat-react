@@ -7,7 +7,11 @@ function App() {
   const [allMessages, setAllMessages] = useState([]);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userData, setUserData] = useState({ username: "", room: "" });
+  const [userData, setUserData] = useState({
+    username: "",
+    room: "",
+    userID: "",
+  });
   const [typingData, setTypingData] = useState("");
 
   function handleUserData(e) {
@@ -38,6 +42,10 @@ function App() {
     socket.on("setTyping", (data) => {
       setTypingData(data);
     });
+
+    socket.on("setID", (userID) => {
+      setUserData((prev) => ({ ...prev, userID }));
+    });
   }, []);
 
   function sendMessage(message) {
@@ -60,6 +68,7 @@ function App() {
       allMessages={allMessages}
       typingData={typingData}
       handleTyping={handleTyping}
+      userID={userData.userID}
     />
   );
 }

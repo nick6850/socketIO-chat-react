@@ -9,7 +9,7 @@ function UserForm({ setIsLoggedIn, userData, handleUserData }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="userForm" onSubmit={handleSubmit}>
       <label htmlFor="username">Your username:</label>
       <input
         type="text"

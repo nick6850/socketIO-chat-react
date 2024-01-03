@@ -1,11 +1,19 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .chat {
+  max-width: 550px;
+  height: 90vh;
+  border: 1px solid black;
+  margin: 10px auto;
+  padding: 20px;
+  border-radius: 5px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  max-width: 550px;
-  height: 100vh;
-  border: 1px solid black;
-  margin: 0 auto;
-  padding: 20px;
 }
 
 .messages {
@@ -13,19 +21,14 @@
   word-wrap: break-word;
   flex-grow: 1;
   overflow-y: scroll;
-  height: 0;
-  max-height: calc(100% - 100px);
-  scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  max-height: calc(90vh - 100px);
 
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: rgba(95, 69, 69, 0.2);
-    max-height: 30px;
+  .sent {
+    text-align: end;
+    margin-right: 10px;
   }
 }
 
@@ -36,19 +39,37 @@
 .sendMessage {
   margin-top: 10px;
   display: flex;
-}
 
-input {
-  flex: 1;
-  padding: 10px;
+  input {
+    flex: 1;
+    padding: 10px;
+  }
 }
 
 button {
-  width: 100px;
+  width: fit-content;
+  padding: 5px 10px;
+  font-size: 23px;
   margin-left: 5px;
   cursor: pointer;
   border: none;
   background-color: aquamarine;
   color: white;
   font-weight: bold;
+}
+
+.userForm {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  margin: 10px auto;
+  padding: 20px;
+  gap: 5px;
+  max-width: 550px;
+
+  button {
+    margin-top: 10px;
+    cursor: pointer;
+    margin: 10px auto 0;
+  }
 }
